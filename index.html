@@ -12,7 +12,6 @@
     <title>crud dashboard</title>
     <!----css---->
     <link rel="stylesheet" href="./css/custom.css" />
-    <link rel="stylesheet" href="./css/practice.css" />
     <!--google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
@@ -237,11 +236,15 @@
               <!-- End XP Col -->
 
               <!-- Start XP Col -->
-              <div style="">
+              <div>
                 <div class="profilebar">
                   <nav class="navbar">
                     <ul class="nav navbar-nav">
-                      <li class="dropdown nav-item active">
+                      <li
+                        class="dropdown nav-item active"
+                        id="notification"
+                        onclick="showNotification()"
+                      >
                         <a href="#" class="nav-link">
                           <span class="material-icons">notifications</span>
                           <span class="notification"></span>
@@ -264,6 +267,11 @@
                       <li class="nav-item">
                         <a class="nav-link" href="#">
                           <span class="material-icons">question_answer</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">
+                          <span class="material-icons">token</span>
                         </a>
                       </li>
                       <li class="nav-item dropdown">
@@ -321,7 +329,7 @@
                   style="color: black; font-weight: 800; font-size: larger"
                   id="customerCount"
                 >
-                  97,524
+                  0
                 </button>
               </div>
               <div
@@ -330,9 +338,8 @@
               >
                 <a
                   href="#addEmployeeModal"
-                  class="btn"
+                  class="btn add-btn"
                   onclick="showAddModal()"
-                  style="background: rgb(52, 112, 243)"
                 >
                   <span>Add Customers</span>
                 </a>
@@ -345,13 +352,27 @@
 
         <div class="main-content">
           <div class="row">
-            <div>
+            <div style="width: 100%">
               <div class="table-wrapper">
                 <div class="table-title">
                   <div class="user_count">
                     <div class="">
                       <form>
                         <div class="input-group">
+                          <div class="input-group-append">
+                            <button
+                              class="btn"
+                              type="submit"
+                              id="button-addon2"
+                              style="
+                                border: none;
+                                padding: 8px;
+                                background: none;
+                              "
+                            >
+                              <i class="material-icons">search</i>
+                            </button>
+                          </div>
                           <input
                             type="search"
                             class="form-control"
@@ -359,417 +380,389 @@
                             id="myInput"
                             onkeyup="onSearch()"
                           />
-                          <div class="input-group-append">
-                            <button
-                              class="btn"
-                              type="submit"
-                              id="button-addon2"
-                              style="border-radius: 0 50px 50px 0; padding: 8px"
-                            >
-                              <i class="material-icons">search</i>
-                            </button>
-                          </div>
                         </div>
                       </form>
                     </div>
-                    <!-- <div class="">
+                    <div class="">
                       <a
                         href="#deleteEmployeeModal"
-                        class="btn"
-                        style="background: red"
-                        onClick="multipleDelete(this)"
+                        class="btn danger"
+                        onClick="showDeleteModal()"
                       >
                         <i
-                          class="material-icons"
-                          style="transform: translate(0px, 5px); color: #fff"
+                          class="material-icons danger-icon"
+                          style="transform: translate(0px, 5px)"
                           >delete</i
                         >
                         <span>Delete</span></a
                       >
-                    </div> -->
+                    </div>
                   </div>
                 </div>
-                <table
-                  class="table table-striped"
-                  style="overflow-x: scroll"
-                  id="listTable"
-                >
-                  <thead>
-                    <tr style="text-transform: uppercase">
-                      <th></th>
-                      <th>Name</th>
-                      <th>E-mail</th>
-                      <th>Phone</th>
-                      <th>counrty</th>
-                      <th>account status</th>
-                      <th>orders</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <span class="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox1"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label for="checkbox1"></label>
-                        </span>
-                      </td>
-                      <td>Thomas Hardy</td>
-                      <td>thomashardy@mail.com</td>
-                      <td>(171) 555-2222</td>
-                      <td>USA</td>
+                <div style="overflow-x: auto">
+                  <table
+                    class="table table-striped"
+                    style="border-collapse: collapse; width: 100%"
+                    id="listTable"
+                  >
+                    <thead>
+                      <tr style="text-transform: uppercase">
+                        <th></th>
+                        <th>Name</th>
+                        <th>E-mail</th>
+                        <th>Phone</th>
+                        <th>counrty</th>
+                        <th>account status</th>
+                        <th>orders</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody style="font-size: 10px">
+                      <tr>
+                        <td>
+                          <span class="custom-checkbox">
+                            <input
+                              type="checkbox"
+                              class="checkbox"
+                              id="checkbox1"
+                            />
+                            <label for="checkbox1"></label>
+                          </span>
+                        </td>
+                        <td>
+                          <img
+                            src="./assets/user_1.png"
+                            class="user_img"
+                          /><span>Amanda Harvey</span>
+                        </td>
+                        <td>amanda@site.com</td>
+                        <td>+1-202-505-0140</td>
+                        <td>United Kingdom</td>
 
-                      <td></td>
-                      <td>4</td>
-                      <td>
-                        <a
-                          href="#editEmployeeModal"
-                          class="edit"
-                          onClick="onEdit(this)"
-                        >
-                          <i
-                            class="material-icons"
-                            data-toggle="tooltip"
-                            title="Edit"
-                            ></i
-                          ></a
-                        >
-                        <a
-                          href="#deleteEmployeeModal"
-                          class="delete"
-                          onClick="onDelete(this)"
-                        >
-                          <i class="material-icons" title="Delete"></i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span class="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox2"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label for="checkbox2"></label>
-                        </span>
-                      </td>
-                      <td>Dominique Perrier</td>
-                      <td>dominiqueperrier@mail.com</td>
-                      <td>(313) 555-5735</td>
-                      <td>Germany</td>
-                      <td></td>
-                      <td>2</td>
+                        <td><span class="status"></span>Active</td>
+                        <td>3</td>
+                        <td>
+                          <a
+                            href="#editEmployeeModal"
+                            class="edit"
+                            onClick="onEdit(this)"
+                          >
+                            <i
+                              class="material-icons"
+                              data-toggle="tooltip"
+                              title="Edit"
+                              ></i
+                            ></a
+                          >
+                          <a
+                            href="#deleteEmployeeModal"
+                            class="delete"
+                            onClick="onDelete(this)"
+                          >
+                            <i class="material-icons" title="Delete"></i></a
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="custom-checkbox">
+                            <input
+                              type="checkbox"
+                              class="checkbox"
+                              id="checkbox2"
+                            />
+                            <label for="checkbox2"></label>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            id="profileImage"
+                            style="color: rgb(110, 110, 235)"
+                            >A</span
+                          ><span class="fullName">Anne Richard</span>
+                        </td>
+                        <td>anne@site.com</td>
+                        <td>+1-752-235-2353</td>
+                        <td>United States</td>
+                        <td><span class="status_red"></span>Disabled</td>
+                        <td>1</td>
 
-                      <td>
-                        <a
-                          href="#editEmployeeModal"
-                          class="edit"
-                          onClick="onEdit(this)"
-                        >
-                          <i class="material-icons" title="Edit"></i></a
-                        >
-                        <a
-                          href="#deleteEmployeeModal"
-                          class="delete"
-                          onClick="onDelete(this)"
-                        >
-                          <i class="material-icons" title="Delete"></i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span class="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox3"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label for="checkbox3"></label>
-                        </span>
-                      </td>
-                      <td>Maria Anders</td>
-                      <td>mariaanders@mail.com</td>
-                      <td>(503) 555-9931</td>
-                      <td>France</td>
-                      <td></td>
-                      <td>5</td>
-                      <td>
-                        <a
-                          href="#editEmployeeModal"
-                          class="edit"
-                          onClick="onEdit(this)"
-                        >
-                          <i class="material-icons" title="Edit"></i></a
-                        >
-                        <a
-                          href="#deleteEmployeeModal"
-                          class="delete"
-                          onClick="onDelete(this)"
-                        >
-                          <i class="material-icons" title="Delete"></i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span class="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox4"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label for="checkbox4"></label>
-                        </span>
-                      </td>
-                      <td>Fran Wilson</td>
-                      <td>franwilson@mail.com</td>
-                      <td>(204) 619-5731</td>
-                      <td>Spain</td>
-                      <td></td>
-                      <td>7</td>
-                      <td>
-                        <a
-                          href="#editEmployeeModal"
-                          class="edit"
-                          onClick="onEdit(this)"
-                        >
-                          <i class="material-icons" title="Edit"></i></a
-                        >
-                        <a
-                          href="#deleteEmployeeModal"
-                          class="delete"
-                          onClick="onDelete(this)"
-                        >
-                          <i class="material-icons" title="Delete"></i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span class="custom-checkbox">
-                          <input
-                            type="checkbox"
-                            id="checkbox5"
-                            name="options[]"
-                            value="1"
-                          />
-                          <label for="checkbox5"></label>
-                        </span>
-                      </td>
-                      <td>Martin Blank</td>
-                      <td>martinblank@mail.com</td>
-                      <td>(480) 631-2097</td>
-                      <td>Italy</td>
-                      <td></td>
-                      <td>8</td>
-                      <td>
-                        <a
-                          href="#editEmployeeModal"
-                          class="edit"
-                          onClick="onEdit(this)"
-                        >
-                          <i class="material-icons" title="Edit"></i></a
-                        >
-                        <a
-                          href="#deleteEmployeeModal"
-                          class="delete"
-                          onClick="onDelete(this)"
-                        >
-                          <i class="material-icons" title="Delete"></i></a
-                        >
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="">
-                  <div class="hint-text">
-                    Showing <b>5</b> out of <b>25</b> entries
+                        <td>
+                          <a
+                            href="#editEmployeeModal"
+                            class="edit"
+                            onClick="onEdit(this)"
+                          >
+                            <i class="material-icons" title="Edit"></i></a
+                          >
+                          <a
+                            href="#deleteEmployeeModal"
+                            class="delete"
+                            onClick="onDelete(this)"
+                          >
+                            <i class="material-icons" title="Delete"></i></a
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="custom-checkbox">
+                            <input
+                              type="checkbox"
+                              class="checkbox"
+                              id="checkbox3"
+                            />
+                            <label for="checkbox3"></label>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            id="profileImage"
+                            style="color: rgb(82, 38, 49); background: #c5c5c5"
+                            >B</span
+                          ><span class="fullName">Bob Dean</span>
+                        </td>
+
+                        <td>bob@site.com</td>
+                        <td>+1-854-235-9755</td>
+                        <td>Austria</td>
+                        <td><span class="status_red"></span>Disabled</td>
+                        <td>8</td>
+                        <td>
+                          <a
+                            href="#editEmployeeModal"
+                            class="edit"
+                            onClick="onEdit(this)"
+                          >
+                            <i class="material-icons" title="Edit"></i></a
+                          >
+                          <a
+                            href="#deleteEmployeeModal"
+                            class="delete"
+                            onClick="onDelete(this)"
+                          >
+                            <i class="material-icons" title="Delete"></i></a
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="custom-checkbox">
+                            <input
+                              type="checkbox"
+                              class="checkbox"
+                              id="checkbox4"
+                            />
+                            <label for="checkbox4"></label>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            id="profileImage"
+                            style="color: rgb(38, 122, 59)"
+                            >B</span
+                          ><span class="fullName">Brian Halligan</span>
+                        </td>
+
+                        <td>Brian@site.com</td>
+                        <td>+1-141-463-1512</td>
+                        <td>France</td>
+                        <td><span class="status"></span>Active</td>
+                        <td>1</td>
+                        <td>
+                          <a
+                            href="#editEmployeeModal"
+                            class="edit"
+                            onClick="onEdit(this)"
+                          >
+                            <i class="material-icons" title="Edit"></i></a
+                          >
+                          <a
+                            href="#deleteEmployeeModal"
+                            class="delete"
+                            onClick="onDelete(this)"
+                          >
+                            <i class="material-icons" title="Delete"></i></a
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="">
+                <div class="hint-text">
+                  Showing <b>5</b> out of <b>25</b> entries
+                </div>
+                <ul class="pagination">
+                  <li class="page-item"><a href="#">Previous</a></li>
+                  <li>
+                    <a href="#" class="page-link">1</a>
+                  </li>
+                  <li>
+                    <a href="#" class="page-link">2</a>
+                  </li>
+                  <li class="= active">
+                    <a href="#" class="page-link">3</a>
+                  </li>
+                  <li>
+                    <a href="#" class="page-link">4</a>
+                  </li>
+                  <li>
+                    <a href="#" class="page-link">5</a>
+                  </li>
+                  <li>
+                    <a href="#" class="page-link">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Add/Edit Modal HTML -->
+          <div id="addEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="form_header">Add Customer</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="closeAddModal()"
+                    >
+                      ×
+                    </button>
                   </div>
-                  <ul class="pagination">
-                    <li class="page-item"><a href="#">Previous</a></li>
-                    <li>
-                      <a href="#" class="page-link">1</a>
-                    </li>
-                    <li>
-                      <a href="#" class="page-link">2</a>
-                    </li>
-                    <li class="= active">
-                      <a href="#" class="page-link">3</a>
-                    </li>
-                    <li>
-                      <a href="#" class="page-link">4</a>
-                    </li>
-                    <li>
-                      <a href="#" class="page-link">5</a>
-                    </li>
-                    <li>
-                      <a href="#" class="page-link">Next</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <!-- Add/Edit Modal HTML -->
-            <div id="addEmployeeModal" class="modal fade">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <form>
-                    <div class="modal-header">
-                      <h4 class="modal-title" id="form_header">Add Customer</h4>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="closeAddModal()"
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label>Name</label
+                      ><small
+                        class="validation-error hide"
+                        id="nameValidateError"
+                        >*This field is required*</small
                       >
-                        ×
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="form-group">
-                        <label>Name</label
-                        ><small
-                          class="validation-error hide"
-                          id="nameValidateError"
-                          >*This field is required*</small
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="uName"
-                          id="uName"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          class="form-control"
-                          name="mail"
-                          id="mail"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label>Phone</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="phone"
-                          id="phone"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label>Country</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="country"
-                          id="country"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label>Account Status</label>
-                        <select
-                          type="text"
-                          class="form-control"
-                          name="status"
-                          id="status"
-                        >
-                          <option></option>
-                          <option>Active</option>
-                          <option>Disabled</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label>Orders</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="orders"
-                          id="orders"
-                        />
-                      </div>
-                    </div>
-                    <div class="modal-footer">
                       <input
-                        type="button"
-                        class="btn btn-warning"
-                        value="Cancel"
-                        onclick="closeAddModal()"
-                      />
-                      <input
-                        type="submit"
-                        class="btn btn-success"
-                        value="Add"
-                        onclick="event.preventDefault();onFormSubmit()"
+                        type="text"
+                        class="form-control"
+                        name="uName"
+                        id="uName"
                       />
                     </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <!-- Delete Modal HTML -->
-            <div id="deleteEmployeeModal" class="modal fade">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <form>
-                    <div class="modal-header">
-                      <h4 class="modal-title">Delete Employee</h4>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-hidden="true"
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        name="mail"
+                        id="mail"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Phone</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="phone"
+                        id="phone"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Country</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="country"
+                        id="country"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Account Status</label>
+                      <select
+                        type="text"
+                        class="form-control"
+                        name="status"
+                        id="status"
                       >
-                        ×
-                      </button>
+                        <option></option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                      </select>
                     </div>
-                    <div class="modal-body">
-                      <p>Are you sure you want to delete these Records?</p>
-                      <p class="text-warning">
-                        <small>This action cannot be undone.</small>
-                      </p>
-                    </div>
-                    <div class="modal-footer">
+                    <div class="form-group">
+                      <label>Orders</label>
                       <input
-                        type="button"
-                        class="btn btn-warning"
-                        data-dismiss="modal"
-                        value="Cancel"
-                      />
-                      <input
-                        type="submit"
-                        class="btn"
-                        value="Delete"
-                        style="background: red"
+                        type="number"
+                        class="form-control"
+                        name="orders"
+                        id="orders"
                       />
                     </div>
-                  </form>
-                </div>
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="button"
+                      class="btn btn-warning"
+                      value="Cancel"
+                      onclick="closeAddModal()"
+                    />
+                    <input
+                      type="submit"
+                      class="btn btn-success"
+                      value="Add"
+                      onclick="event.preventDefault();onFormSubmit()"
+                    />
+                  </div>
+                </form>
               </div>
             </div>
           </div>
 
-          <!---footer---->
+          <!-- Delete Modal HTML -->
+          <div id="deleteEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form>
+                  <div class="modal-header">
+                    <h4 class="modal-title">Delete Employee</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-hidden="true"
+                      onClick="closeDeleteModal()"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Are you sure you want to delete these Records?</p>
+                    <p class="text-warning">
+                      <small>This action cannot be undone.</small>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <input
+                      type="button"
+                      class="btn btn-warning"
+                      data-dismiss="modal"
+                      value="Cancel"
+                      onClick="closeDeleteModal()"
+                    />
+                    <input
+                      type="submit"
+                      class="btn"
+                      value="Delete"
+                      style="background: red"
+                      id="delete"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <footer class="footer">
-          <div class="">
-            <div class="footer-in">
-              <p class="mb-0">© 2020 Vishweb design - All Rights Reserved.</p>
-            </div>
-          </div>
-        </footer>
+        <!---footer---->
       </div>
     </div>
 
@@ -790,20 +783,28 @@
           $("#sidebar,.body-overlay").toggleClass("show-nav");
         });
 
-        // $(".dropdown").on("click", function () {
-        //   console.log("Triggered...........");
-        //   $(this).children().toggleClass("show_dropdown");
-        //   // $(this).not(children()).removeClass("show_dropdown");
+        // $("#notification").click(function () {
+        //   $(".show_notification").toggleClass("show_dropdown");
         // });
 
         $(".dropdown").click(function () {
-          console.log("Triggered...........");
-
           $(".show_dropdown").toggleClass("show_dropdown");
           var nextSibling = $(this).children();
           nextSibling.toggleClass("show_dropdown");
         });
+        var tableRef = document.getElementById("listTable");
+        var tableRows = tableRef.rows;
+        var userCount = tableRows.length - 1;
+
+        document.getElementById("customerCount").innerHTML = userCount;
       });
     </script>
   </body>
+  <footer class="footer">
+    <div class="">
+      <div class="footer-in">
+        <p class="mb-0">© 2023 Centilo design - All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
 </html>

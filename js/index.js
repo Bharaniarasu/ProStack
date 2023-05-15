@@ -1,23 +1,30 @@
-function showAddModal() {
+const showAddModal = () => {
   document.getElementById("form_header").innerHTML = "Add Customer";
 
-  $("#addEmployeeModal").toggleClass("show"); //see here usage
-}
+  $("#addEmployeeModal").toggleClass("show");
+};
 
-function closeAddModal() {
-  $("#addEmployeeModal").removeClass("show"); //see here usage
+const closeAddModal = () => {
+  $("#addEmployeeModal").removeClass("show");
   resetFormData();
-}
+};
 const showUpdataModal = () => {
   document.getElementById("form_header").innerHTML = "Update Customer";
 
-  $("#addEmployeeModal").toggleClass("show"); //see here usage
+  $("#addEmployeeModal").toggleClass("show");
 };
 const closeUpdataModal = () => {
-  $("#editEmployeeModal").removeClass("show"); //see here usage
+  $("#editEmployeeModal").removeClass("show");
 };
+const showDeleteModal = () => {
+  $("#deleteEmployeeModal").toggleClass("show");
+};
+const closeDeleteModal = () => {
+  $("#deleteEmployeeModal").removeClass("show");
+};
+
 let selectedRow = null;
-function onFormSubmit() {
+const onFormSubmit = () => {
   console.log("Submit triggered..........");
 
   if (doValidate()) {
@@ -31,8 +38,9 @@ function onFormSubmit() {
 
     resetFormData();
     closeAddModal();
+    showUserCount();
   }
-}
+};
 const readFormData = () => {
   let formData = {};
   formData["uName"] = document.getElementById("uName").value;
@@ -43,7 +51,7 @@ const readFormData = () => {
   formData["orders"] = document.getElementById("orders").value;
   return formData;
 };
-function insertNewData(data) {
+const insertNewData = (data) => {
   let table = document
     .getElementById("listTable")
     .getElementsByTagName("tbody")[0];
@@ -53,11 +61,14 @@ function insertNewData(data) {
   col1 = newRow.insertCell(0);
   col1.innerHTML +=
     "<span class='custom-checkbox'>" +
-    "<input type='checkbox' id='checkbox1' name='options[]' value='1' />" +
+    "<input type='checkbox' id='checkbox12' />" +
     "<label for='checkbox1'></label>";
   ("</span>");
   col2 = newRow.insertCell(1);
-  col2.innerHTML = data.uName;
+  col2.innerHTML =
+    `<span id="profileImage" style="color:rgb(110, 110, 235)"></span><span class="fullName">` +
+    data.uName +
+    `</span>`;
   col3 = newRow.insertCell(2);
   col3.innerHTML = data.mail;
   col4 = newRow.insertCell(3);
@@ -97,7 +108,7 @@ function insertNewData(data) {
                           ></a
                         >
                       </td> `;
-}
+};
 const resetFormData = () => {
   document.getElementById("uName").value = "";
   document.getElementById("mail").value = "";
@@ -111,17 +122,23 @@ const onEdit = (td) => {
   showUpdataModal();
   selectedRow = td.parentElement.parentElement;
   //   document.getElementById("").value = selectedRow.cells[0].innerHTML;
-
-  document.getElementById("uName").value = selectedRow.cells[1].innerHTML;
+  console.log(document.getElementById("phone").value);
+  document.getElementById("uName").value =
+    selectedRow.cells[1].children[1].innerHTML;
   document.getElementById("mail").value = selectedRow.cells[2].innerHTML;
   document.getElementById("phone").value = selectedRow.cells[3].innerHTML;
   document.getElementById("country").value = selectedRow.cells[4].innerHTML;
   document.getElementById("status").value = selectedRow.cells[5].innerHTML;
   document.getElementById("orders").value = selectedRow.cells[6].innerHTML;
+  console.log(document.getElementById("phone").value);
+
   console.log(selectedRow);
 };
 const updateData = (data) => {
-  selectedRow.cells[1].innerHTML = data.uName;
+  selectedRow.cells[1].innerHTML =
+    `<span id="profileImage" style="color:rgb(110, 110, 235)"></span><span class="fullName">` +
+    data.uName +
+    `</span>`;
   selectedRow.cells[2].innerHTML = data.mail;
   selectedRow.cells[3].innerHTML = data.phone;
   selectedRow.cells[4].innerHTML = data.country;
@@ -134,20 +151,10 @@ const onDelete = (tr) => {
 
     document.getElementById("listTable").deleteRow(row.rowIndex);
     resetFormData();
+    showUserCount();
   }
 };
-const multipleDelete = (tr) => {
-  let tbody = document
-    .getElementById("listTable")
-    .getElementsByTagName("tbody")[0];
-  let trLength = tbody.children.length;
 
-  for (let i = 0; i <= trLength; i++) {
-    document.getElementById();
-  }
-  row = tr.parentElement.parentElement;
-  console.log(row);
-};
 const onSearch = () => {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("myInput");
@@ -181,6 +188,40 @@ const doValidate = () => {
       document.getElementById("nameValidateError").classList.add("hide");
     }
   }
-  console.log(isValid);
   return isValid;
 };
+//delete selected rows
+document.getElementById("delete").addEventListener("click", () => {
+  let tableRef = document.getElementById("listTable");
+  let tableRows = tableRef.rows;
+  let checkedIndexes = [];
+  for (var i = 1; i < tableRows.length; i++) {
+    let checkboxSelected =
+      tableRows[i].cells[0].children[0].children[0].checked;
+    if (checkboxSelected) {
+      checkedIndexes.push(i);
+    }
+  }
+
+  for (let k = checkedIndexes.length - 1; k >= 0; k--) {
+    tableRef.deleteRow(checkedIndexes[k]);
+  }
+  closeDeleteModal();
+  showUserCount();
+});
+
+const showUserCount = () => {
+  let tableRef = document.getElementById("listTable");
+  let tableRows = tableRef.rows;
+  let userCount = tableRows.length - 1;
+
+  document.getElementById("customerCount").innerHTML = userCount;
+};
+// document.getElementById("notification").addEventListener("click", () => {
+//   console.log("noti");
+//   $("#notification >ul").toggleClass("show_notification");
+// });
+
+// const showNotification = () => {
+//   $(".show_notification").toggleClass("show_notification");
+// };
